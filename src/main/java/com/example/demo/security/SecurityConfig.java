@@ -28,12 +28,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/","/api/v1/auth/login", "/api/v1/auth/signup").permitAll() // Allow public access to these endpoints
+                .antMatchers("/api/v1/auth/login", "/api/v1/auth/signup").permitAll()// Allow public access to these endpoints
                 .anyRequest().authenticated() // All other requests need to be authenticated
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); // No sessions
 
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+        //UsernamePasswordAuthenticationFilter in the filter chain. This ensures that the JWT is validated before processing the authentication logic
     }
     @Bean
     public PasswordEncoder passwordEncoder() {

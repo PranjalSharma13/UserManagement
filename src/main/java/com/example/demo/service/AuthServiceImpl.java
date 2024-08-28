@@ -35,13 +35,17 @@ public class AuthServiceImpl implements AuthService {
             result = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())
             );
+            //This creates an authentication token using the user's email (or username) and password
         } catch (BadCredentialsException e) {
             throw new BadCredentialsException("Invalid credentials provided.");
         }
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(result.getName());
+//   The userDetailsService is typically an interface that loads user-specific data (like roles and permissions) from a database or another source.
         String accessToken = jwtUtil.generateToken(userDetails);
+        //This line generates an access token using the user details. The accessToken is usually short-lived and is used to authenticate the user for subsequent requests.
         String refreshToken = jwtUtil.generateRefreshToken(loginRequest.getEmail()); String username = userDetails.getUsername(); // Modify based on your UserDetails implementation
+     // This generates a refresh token, which is typically long-lived and can be used to obtain a new access token without requiring the user to log in again. In this case, the email is used to generate the refresh token
         Set<Role> roles = userDetails.getAuthorities().stream()
                 .map(authority -> {
                     RoleName roleName = RoleName.valueOf(authority.getAuthority());
@@ -49,7 +53,7 @@ public class AuthServiceImpl implements AuthService {
                 })
                 .collect(Collectors.toSet());
 
-        return new LoginResponse(username, roles,accessToken, refreshToken);
+        return new LoginResponse(username,roles,accessToken, refreshToken);
     }
 
     @Override
@@ -58,7 +62,7 @@ public class AuthServiceImpl implements AuthService {
 
         if (isRefreshTokenValid) {
             boolean isAccessTokenExpired = jwtUtil.isTokenExpired(refreshTokenRequest.getAccessToken());
-
+//This method checks if the provided refresh token is valid. It typically checks for its signature, expiration, and integrity.
             if (isAccessTokenExpired) {
                 log.info("ACCESS TOKEN IS EXPIRED"); // Consider logging instead of printing to console.
                 String newAccessToken = jwtUtil.doGenerateToken(jwtUtil.getSubject(refreshTokenRequest.getRefreshToken()));

@@ -1,5 +1,6 @@
 package com.example.demo.util;
 
+import com.example.demo.service.ApplicationUserDetailsService;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,7 +16,8 @@ import java.util.function.Function;
 
 @Component
 public class JwtUtil {
-    UserDetailsService userDetailsService;
+    @Autowired
+    ApplicationUserDetailsService  userDetailsService;
     private final String secret = "top-secret";
     private final long expiration = 5 * 60 * 60 * 60;
     //     private final long expiration = 5;
