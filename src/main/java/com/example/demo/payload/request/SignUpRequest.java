@@ -1,9 +1,20 @@
 package com.example.demo.payload.request;
 
+import java.util.Set;
+
 public class SignUpRequest {
     private String username;
     private String email;
     private String password;
+    private Set<String> role;
+
+    public Set<String> getRole() {
+        return role;
+    }
+
+    public void setRole(Set<String> role) {
+        this.role = role;
+    }
 
     public String getUsername() {
         return username;

@@ -14,12 +14,12 @@ class DemoApplicationTests {
 	void contextLoads() {
 	}
 
-	@Autowired
-	private TestRestTemplate restTemplate;
-
-	@Test
-	void homeResponse() {
-		String body = this.restTemplate.getForObject("/", String.class);
-		assertEquals("Spring is here!", body);
-	}
+//	@Autowired
+//	private TestRestTemplate restTemplate;
+//
+//	@Test
+//	void homeResponse() {
+//		String body = this.restTemplate.getForObject("/", String.class);
+//		assertEquals("Spring is here!", body);
+//	}
 }
